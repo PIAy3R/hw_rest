@@ -35,11 +35,11 @@ def parse(location:str):
 
     #parse paths
     paths = spec.get(DocKey.PATHS, {})
-    if len(paths) > 0:
-        parse_paths(paths)
+    # if len(paths) > 0:
+    #     parse_paths(paths)
 
-    #parse dependency
-    # _parse_dependency(DEFINITIONS)
+    # parse dependency
+    _show_dependency(DEFINITIONS)
 
 
 
@@ -94,16 +94,11 @@ def parse_paths(paths:dict):
             for status_code, response_info in method_info.get(DocKey.RESPONSES, {}).items():
                 operation.addResponse(Response.buildResponse(status_code, response_info, DEFINITIONS, operation))
             print(operation)
-            # extractDependencyFromOperation(operation)
             for i in operation.responseList:
                 print(i.expected_status_code)
 
 
 
-def _parse_dependency(definetion:dict):
+def _show_dependency(definetion:dict):
     print(definetion)
 
-
-def extractDependencyFromOperation(oper1:Operation):
-    for each in oper1.responseList:
-        print(each.content)
