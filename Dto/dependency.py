@@ -26,5 +26,9 @@ class Dependency:
         self.dependency = dependency
 
 
+    def test(self):
+        pass
+
+
 
 
