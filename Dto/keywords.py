@@ -91,3 +91,10 @@ class Method(Enum):
     GET = "get"
     DELETE = "delete"
     PUT = "put"
+
+class DependencyType(Enum):
+    DATA = 'data'           # A data dependency
+    CREATE = 'create'       # A create CRUD dependency
+    RETRIEVE = 'retrieve'   # A read CRUD dependency
+    UPDATE = 'update'       # A update CRUD dependency
+    DELETE = 'delete'       # A delete CRUD dependency

@@ -39,6 +39,9 @@ def parse():
     # parse definitions
     _parse_definition_example()
 
+    #parse dependency
+    _parse_dependency()
+
 
 def _compile_url(spec: dict):
     """
@@ -120,3 +123,7 @@ def _parse_whole_example(exampleInfo: dict):
         else:
             example = Example(p_name, p_example)
             Example.members.add(example)
+
+
+def _parse_dependency():
+    pass
