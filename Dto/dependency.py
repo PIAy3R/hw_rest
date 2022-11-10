@@ -2,6 +2,7 @@ from testoracle_kg.Dto.parameter import buildParam
 from testoracle_kg.Dto.parameter import AbstractParam
 from testoracle_kg.Dto.keywords import ParamKey, DocKey
 from testoracle_kg.Exception.exceptions import UnsupportedError
+from testoracle_kg.Dto.operation import *
 import json
 import re
 import spacy
@@ -13,15 +14,16 @@ from typing import List, Set
 from testoracle_kg.Dto.parameter import AbstractParam, EnumParam
 from enum import Enum
 
-class Relationship:
-    def __init__(self,operation1,operation2,relation):
-        self.parabedepended = operation1
-        self.paradepend = operation2
-        self.relationship = relation
+class Dependency:
+    def __init__(self):
+        self.operationList: List[Operation] = list()
+        self.dependency = ''
 
-    @classmethod
-    def _build_relation(cls):
-        pass
+    def addOperation(self,opera1: Operation):
+        self.operationList.append(opera1)
+
+    def defDependency(self,dependency:str):
+        self.dependency = dependency
 
 
 
