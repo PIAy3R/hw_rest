@@ -14,5 +14,17 @@ from testoracle_kg.Dto.parameter import AbstractParam, EnumParam
 from enum import Enum
 
 class Testcase:
-    def __init__(self):
+    def __init__(self, operation1, response_dict1: dict, test_result1: dict):
+        self.operation = operation1
+        self.response_dict = response_dict1
+        self.test_result = test_result1
+
+    def optimization(self):
+        self.cutOperation()
+    def cutOperation(self):
+        loc = self.operation.rindex('-')
+        self.operation = self.operation[:loc]
+
+    def parseResponse(self):
         pass
+
