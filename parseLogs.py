@@ -13,11 +13,15 @@ def parseLogs():
         with log.open("r") as fp:
             responselog = json.load(fp)
         operation = responselog.get('name')
-        response_dict = responselog.get('testInteractions', {})
+        response_dict = responselog.get('testInteractions', {})[0]
         test_result = responselog.get('testResults', {})
 
-        testcase = Testcase(operation, response_dict, response_dict)
+        testcase = Testcase(operation, response_dict, test_result)
         testcase.optimization()
         print(testcase.operation)
+        print(testcase.url)
+        print(testcase.response_code)
+        print(testcase.response_body)
+        print()
 
 parseLogs()

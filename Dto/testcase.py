@@ -14,17 +14,23 @@ from testoracle_kg.Dto.parameter import AbstractParam, EnumParam
 from enum import Enum
 
 class Testcase:
-    def __init__(self, operation1, response_dict1: dict, test_result1: dict):
-        self.operation = operation1
-        self.response_dict = response_dict1
-        self.test_result = test_result1
+    def __init__(self, operationin, response_dictin: dict, test_resultin: dict):
+        self.operation = operationin
+        self.response_dict = response_dictin
+        self.test_result = test_resultin
+        self.url = ''
+        self.response_code = ''
+        self.response_body = ''
 
     def optimization(self):
         self.cutOperation()
+        self.parseResponse()
     def cutOperation(self):
         loc = self.operation.rindex('-')
         self.operation = self.operation[:loc]
 
     def parseResponse(self):
-        pass
+        self.url = self.response_dict.get('requestURL')
+        self.response_code = self.response_dict.get('responseStatusCode').get('code')
+        self.response_body = self.response_dict.get('responseBody')
 
