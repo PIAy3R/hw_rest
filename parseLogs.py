@@ -18,10 +18,14 @@ def parseLogs():
 
         testcase = Testcase(operation, response_dict, test_result)
         testcase.optimization()
+
+
         print(testcase.operation)
         print(testcase.url)
         print(testcase.response_code)
         print(testcase.response_body)
+        print(testcase.judge)
+        print(testcase.tag)
         print()
 
 parseLogs()
