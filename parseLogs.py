@@ -6,26 +6,45 @@ from hw_rest.Dto.restct import Config
 from hw_rest.Dto.testcase import Testcase
 
 
-Logs = os.listdir(Config.dataPath)
+rootpath = Config.dataPath
+
 def parseLogs():
-    for log in Logs:
-        log = Path(Config.dataPath + '/' +log)
-        with log.open("r") as fp:
-            responselog = json.load(fp)
-        operation = responselog.get('name')
-        response_dict = responselog.get('testInteractions', {})[0]
-        test_result = responselog.get('testResults', {})
 
-        testcase = Testcase(operation, response_dict, test_result)
-        testcase.optimization()
+    logdirs = getPaths(rootpath)
 
+    for logdir in logdirs:
+        Logs = os.listdir(logdir)
+        for log in Logs:
+            log = Path(logdir + '/' +log)
+            with log.open("r") as fp:
+                responselog = json.load(fp)
+            operation = responselog.get('name')
+            response_dict = responselog.get('testInteractions', {})[0]
+            test_result = responselog.get('testResults', {})
 
-        print(testcase.operation)
-        print(testcase.url)
-        print(testcase.response_code)
-        print(testcase.response_body)
-        print(testcase.judge)
-        print(testcase.tag)
-        print()
+            testcase = Testcase.buildCase(operation, response_dict, test_result)
+
+            if testcase.judge == 'FAIL' and testcase.response_code == 500:
+                print(testcase.operation)
+                print(testcase.url)
+                print(testcase.response_code)
+                print(testcase.response_body)
+                print(testcase.judge)
+                print(testcase.tags)
+                print()
+
+# parseLogs()
+
+def getPaths(rootPath):
+    logdirs = list()
+    APILogs = os.listdir(rootpath)
+    for apis in APILogs:
+        logpathNominal = Config.dataPath + apis +'/Report/NominalFuzzer'
+        logpathError = Config.dataPath + apis + '/Report/ErrorFuzzer'
+        logdirs.append(logpathNominal)
+        logdirs.append(logpathError)
+    return logdirs
 
 parseLogs()
+
+

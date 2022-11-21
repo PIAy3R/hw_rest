@@ -47,6 +47,8 @@ class ParamKey:
 
     SCHEMA = "schema"
 
+    STRATEGY = 'mutated'
+
 
 class DataType(Enum):
     # 数字
@@ -98,3 +100,19 @@ class DependencyType(Enum):
     RETRIEVE = 'retrieve'   # A read CRUD dependency
     UPDATE = 'update'       # A update CRUD dependency
     DELETE = 'delete'       # A delete CRUD dependency
+
+class Logs:
+    NAME = 'name'
+    CODE = 'code'
+    TESTINTERACTIONS = 'testInteractions'
+    REQUESTMETHOD = 'requestMethod'
+    REQUESTURL = 'requestURL'
+    RESPONSESTATUSCODE = 'responseStatusCode'
+    RESPONSEBODY = 'responseBody'
+    TAGS = 'tags'
+    TESTRESULTS = 'testResults'
+    ERRORSTATUSCO = 'ErrorStatusCodeOracle'
+    STATUSCO = 'StatusCodeOracle'
+    RESULT = 'result'
+    MESSAGES = 'message'
+

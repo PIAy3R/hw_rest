@@ -51,4 +51,4 @@ class Config:
     columnId = ""
 
     # data and log path
-    dataPath = "D:/gitcode/sources/logs/Project-20221117143524777/Report/ErrorFuzzer"
+    dataPath = "D:/gitcode/sources/logs/11_18/"

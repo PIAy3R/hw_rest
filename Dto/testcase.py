@@ -1,7 +1,8 @@
-from testoracle_kg.Dto.parameter import buildParam
-from testoracle_kg.Dto.parameter import AbstractParam
-from testoracle_kg.Dto.keywords import ParamKey, DocKey
-from testoracle_kg.Exception.exceptions import UnsupportedError
+from hw_rest.Dto.parameter import buildParam
+from hw_rest.Dto.parameter import AbstractParam
+from hw_rest.Dto.keywords import ParamKey, DocKey, Logs
+from hw_rest.Exception.exceptions import UnsupportedError
+from hw_rest.utils import *
 import json
 import re
 import spacy
@@ -10,34 +11,32 @@ from spacy.tokens import Doc
 from pathlib import Path
 from collections import defaultdict, Counter
 from typing import List, Set
-from testoracle_kg.Dto.parameter import AbstractParam, EnumParam
+from hw_rest.Dto.parameter import AbstractParam, EnumParam
 from enum import Enum
 
 class Testcase:
-    def __init__(self, operationin, response_dictin: dict, test_resultin: dict):
-        self.operation = operationin
-        self.response_dict = response_dictin
-        self.test_result = test_resultin
-        self.url = str()
-        self.response_code = str()
-        self.response_body = str()
-        self.judge = str()
-        self.tag = list()
+    def __init__(self, Operation, Tags, Url, Response_code, Response_body, Judge):
+        self.operation = Operation
+        self.tags = Tags
+        self.url = Url
+        self.response_code = Response_code
+        self.response_body = Response_body
+        self.judge = Judge
 
-    def optimization(self):
-        self.cutOperation()
-        self.parseResponse()
-        self.parseResult()
-    def cutOperation(self):
-        loc = self.operation.rindex('-')
-        self.operation = self.operation[:loc]
+    @classmethod
+    def buildCase(cls, Operation, testInteractions, testResults):
 
-    def parseResponse(self):
-        self.url = self.response_dict.get('requestURL')
-        self.response_code = self.response_dict.get('responseStatusCode').get('code')
-        self.response_body = self.response_dict.get('responseBody')
-        self.tag = self.response_dict.get('tags')
+        operation = CutOperation(Operation)
+        tags = testInteractions.get(Logs.TAGS)
+        Url = testInteractions.get(Logs.REQUESTURL)
+        Response_code = testInteractions.get(Logs.RESPONSESTATUSCODE).get(Logs.CODE)
+        Response_body = testInteractions.get(Logs.RESPONSEBODY)
 
-    def parseResult(self):
-        self.judge = self.test_result.get('ErrorStatusCodeOracle').get('result')
+        if ParamKey.STRATEGY in tags:
+            Judge = testResults.get(Logs.ERRORSTATUSCO).get(Logs.RESULT)
+        else:
+            Judge = testResults.get(Logs.STATUSCO).get(Logs.RESULT)
+
+        return cls(operation, tags, Url, Response_code, Response_body, Judge)
+
 
