@@ -3,10 +3,11 @@ import os
 from pathlib import Path
 from hw_rest.Dto.restct import Config
 from hw_rest.Dto.testcase import Testcase
-from hw_rest.Dto.rtgCaseLog import caseLog
+from hw_rest.Dto.rtgCaseLog import TestLog,ErrorLog
 
 rootpath = Config.dataPath
 interLogPath = Config.logpath
+errorLogPath = Config.errorpath
 
 def parseLogs():
 
@@ -49,13 +50,24 @@ def parseInterLogs():
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
-            baseCls = caseLog.buildLogCase(log)
+            baseCls = TestLog.buildtestlog(log)
             print(baseCls.method)
             print(baseCls.path)
             print(baseCls.statuscode)
             print()
 
+def parsEerrorLog():
+    filePath = Path(errorLogPath)
+    with filePath.open("r") as fp:
+        for lines in fp:
+            log = json.loads(lines)
+            errorcls = ErrorLog.builderrorlog(log)
+            print(errorcls.exceptionmessage)
+            print(errorcls.exceptionbacktrace)
+            print()
+
+
 
 parseInterLogs()
-
+# parsEerrorLog()
 

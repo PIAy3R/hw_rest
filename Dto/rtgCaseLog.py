@@ -15,7 +15,7 @@ from hw_rest.Dto.parameter import AbstractParam, EnumParam
 from enum import Enum
 
 
-class caseLog:
+class TestLog:
 
     def __init__(self, method, path, statuscode):
         self.method = method
@@ -23,8 +23,19 @@ class caseLog:
         self.statuscode = statuscode
 
     @classmethod
-    def buildLogCase(cls, responseJson):
+    def buildtestlog(cls, responseJson):
         method = responseJson.get('method')
         path = responseJson.get('path')
         statuscode = responseJson.get('status')
         return cls(method, path, statuscode)
+
+class ErrorLog:
+    def __init__(self, exceptionmessage,exceptionbacktrace):
+        self.exceptionmessage = exceptionmessage
+        self.exceptionbacktrace = exceptionbacktrace
+
+    @classmethod
+    def builderrorlog(cls, log):
+        exceptionmessage = log.get('exception.message')
+        exceptionbacktrace = log.get('exception.backtrace')
+        return cls(exceptionmessage,exceptionbacktrace)

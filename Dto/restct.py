@@ -55,3 +55,4 @@ class Config:
 
     #inter log path
     logpath = "D:/gitcode/sources/logs/api_json.log"
+    errorpath = "D:/gitcode/sources/logs/exceptions_json.log"
