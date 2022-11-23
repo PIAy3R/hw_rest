@@ -52,3 +52,6 @@ class Config:
 
     # data and log path
     dataPath = "D:/gitcode/sources/logs/11_18/"
+
+    #inter log path
+    logpath = "D:/gitcode/sources/logs/api_json.log"

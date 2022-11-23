@@ -1,12 +1,13 @@
 import json
 import os
 from pathlib import Path
-
 from hw_rest.Dto.restct import Config
 from hw_rest.Dto.testcase import Testcase
 
 
 rootpath = Config.dataPath
+
+interLogPath = Config.logpath
 
 def parseLogs():
 
@@ -33,8 +34,6 @@ def parseLogs():
                 print(testcase.tags)
                 print()
 
-# parseLogs()
-
 def getPaths(rootPath):
     logdirs = list()
     APILogs = os.listdir(rootpath)
@@ -45,6 +44,13 @@ def getPaths(rootPath):
         logdirs.append(logpathError)
     return logdirs
 
-parseLogs()
+
+
+def parseInterLogs():
+    filePath = Path(interLogPath)
+    for line in open(filePath, "r", encoding='UTF-8'):
+        print(line)
+
+parseInterLogs()
 
 
