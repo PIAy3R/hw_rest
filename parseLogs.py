@@ -3,10 +3,9 @@ import os
 from pathlib import Path
 from hw_rest.Dto.restct import Config
 from hw_rest.Dto.testcase import Testcase
-
+from hw_rest.Dto.rtgCaseLog import caseLog
 
 rootpath = Config.dataPath
-
 interLogPath = Config.logpath
 
 def parseLogs():
@@ -45,11 +44,17 @@ def getPaths(rootPath):
     return logdirs
 
 
-
 def parseInterLogs():
     filePath = Path(interLogPath)
-    for line in open(filePath, "r", encoding='UTF-8'):
-        print(line)
+    with filePath.open("r") as fp:
+        for lines in fp:
+            log = json.loads(lines)
+            baseCls = caseLog.buildLogCase(log)
+            print(baseCls.method)
+            print(baseCls.path)
+            print(baseCls.statuscode)
+            print()
+
 
 parseInterLogs()
 

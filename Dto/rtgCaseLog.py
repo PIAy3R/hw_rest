@@ -17,9 +17,14 @@ from enum import Enum
 
 class caseLog:
 
-    def __init__(self):
-        pass
+    def __init__(self, method, path, statuscode):
+        self.method = method
+        self.path = path
+        self.statuscode = statuscode
 
     @classmethod
-    def buildLogCase(cls):
-        pass
+    def buildLogCase(cls, responseJson):
+        method = responseJson.get('method')
+        path = responseJson.get('path')
+        statuscode = responseJson.get('status')
+        return cls(method, path, statuscode)
