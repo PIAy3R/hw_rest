@@ -17,17 +17,22 @@ from enum import Enum
 
 class TestLog:
 
-    def __init__(self, method, path, statuscode):
+    def __init__(self, method, path, statuscode, paramslist):
         self.method = method
         self.path = path
         self.statuscode = statuscode
+        self.paramslist = paramslist
 
     @classmethod
     def buildtestlog(cls, responseJson):
         method = responseJson.get('method')
         path = responseJson.get('path')
         statuscode = responseJson.get('status')
-        return cls(method, path, statuscode)
+        paramslist = responseJson.get('params')
+        return cls(method, path, statuscode, paramslist)
+
+    def __repr__(self):
+        return self.method + ' http://localhost:3000' + self.path
 
 class ErrorLog:
     def __init__(self, exceptionmessage,exceptionbacktrace):

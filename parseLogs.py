@@ -51,9 +51,10 @@ def parseInterLogs():
         for lines in fp:
             log = json.loads(lines)
             baseCls = TestLog.buildtestlog(log)
-            print(baseCls.method)
-            print(baseCls.path)
+            print(baseCls)
             print(baseCls.statuscode)
+            for dict in baseCls.paramslist:
+                print(dict)
             print()
 
 def parsEerrorLog():

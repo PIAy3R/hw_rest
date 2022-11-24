@@ -1,7 +1,7 @@
-from testoracle_kg.Dto.parameter import buildParam
-from testoracle_kg.Dto.parameter import AbstractParam
-from testoracle_kg.Dto.keywords import ParamKey, DocKey
-from testoracle_kg.Exception.exceptions import UnsupportedError
+from hw_rest.Dto.parameter import buildParam
+from hw_rest.Dto.parameter import AbstractParam
+from hw_rest.Dto.keywords import ParamKey, DocKey
+from hw_rest.Exception.exceptions import UnsupportedError
 
 
 class Response:
