@@ -25,13 +25,8 @@ def parseLogs():
 
             testcase = Testcase.buildCase(operation, response_dict, test_result)
 
-            if testcase.judge == 'FAIL' and testcase.response_code == 500:
-                print(testcase.operation)
-                print(testcase.url)
-                print(testcase.response_code)
-                print(testcase.response_body)
-                print(testcase.judge)
-                print(testcase.tags)
+            if testcase.response_code == 500:
+                testcase.showSelf()
                 print()
 
 def getPaths(rootPath):
@@ -51,11 +46,8 @@ def parseInterLogs():
         for lines in fp:
             log = json.loads(lines)
             baseCls = TestLog.buildtestlog(log)
-            print(baseCls)
-            print(baseCls.statuscode)
-            for dict in baseCls.paramslist:
-                print(dict)
-            print()
+            if baseCls.statuscode == 500:
+                baseCls.printSelf()
 
 def parsEerrorLog():
     filePath = Path(errorLogPath)
@@ -63,12 +55,13 @@ def parsEerrorLog():
         for lines in fp:
             log = json.loads(lines)
             errorcls = ErrorLog.builderrorlog(log)
+            print(errorcls.exceptioclass)
             print(errorcls.exceptionmessage)
             print(errorcls.exceptionbacktrace)
             print()
 
 
-
+parseLogs()
 parseInterLogs()
 # parsEerrorLog()
 

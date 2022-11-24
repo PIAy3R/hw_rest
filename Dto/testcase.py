@@ -39,4 +39,12 @@ class Testcase:
 
         return cls(operation, tags, Url, Response_code, Response_body, Judge)
 
+    def showSelf(self):
+        print(self.operation)
+        print(self.url)
+        print(self.response_code)
+        print(self.response_body)
+        print(self.judge)
+        print(self.tags)
+
 

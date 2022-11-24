@@ -34,13 +34,23 @@ class TestLog:
     def __repr__(self):
         return self.method + ' http://localhost:3000' + self.path
 
+    def printSelf(self):
+        print(self)
+        for dicts in self.paramslist:
+            if dicts is not None:
+                print(dicts)
+        print(self.statuscode)
+        print()
+
 class ErrorLog:
-    def __init__(self, exceptionmessage,exceptionbacktrace):
+    def __init__(self, exceptioclass, exceptionmessage, exceptionbacktrace):
+        self.exceptioclass = exceptioclass
         self.exceptionmessage = exceptionmessage
         self.exceptionbacktrace = exceptionbacktrace
 
     @classmethod
     def builderrorlog(cls, log):
+        exceptioclass = log.get('exception.class')
         exceptionmessage = log.get('exception.message')
         exceptionbacktrace = log.get('exception.backtrace')
-        return cls(exceptionmessage,exceptionbacktrace)
+        return cls(exceptioclass, exceptionmessage, exceptionbacktrace)
