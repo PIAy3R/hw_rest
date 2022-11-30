@@ -9,7 +9,11 @@ rootpath = Config.dataPath
 interLogPath = Config.logpath
 errorLogPath = Config.errorpath
 
-def parseLogs():
+TestCases = []
+apiLogs = []
+ErrorLogs = []
+
+def parseTestCases():
 
     logdirs = getPaths(rootpath)
 
@@ -23,11 +27,7 @@ def parseLogs():
             response_dict = responselog.get('testInteractions', {})[0]
             test_result = responselog.get('testResults', {})
 
-            testcase = Testcase.buildCase(operation, response_dict, test_result)
-
-            if testcase.response_code == 500:
-                testcase.showSelf()
-                print()
+            TestCases.append(Testcase.buildCase(operation, response_dict, test_result))
 
 def getPaths(rootPath):
     logdirs = list()
@@ -45,23 +45,14 @@ def parseInterLogs():
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
-            baseCls = TestLog.buildtestlog(log)
-            if baseCls.statuscode == 500:
-                baseCls.printSelf()
+            apiLogs.append(TestLog.buildtestlog(log))
+
 
 def parsEerrorLog():
     filePath = Path(errorLogPath)
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
-            errorcls = ErrorLog.builderrorlog(log)
-            print(errorcls.exceptioclass)
-            print(errorcls.exceptionmessage)
-            print(errorcls.exceptionbacktrace)
-            print()
+            ErrorLogs.append(ErrorLog.builderrorlog(log))
 
-
-parseLogs()
-parseInterLogs()
-# parsEerrorLog()
 

@@ -15,13 +15,14 @@ from hw_rest.Dto.parameter import AbstractParam, EnumParam
 from enum import Enum
 
 class Testcase:
-    def __init__(self, Operation, Tags, Url, Response_code, Response_body, Judge):
+    def __init__(self, Operation, Tags, Url, Response_code, Response_body, Judge, Message):
         self.operation = Operation
         self.tags = Tags
         self.url = Url
         self.response_code = Response_code
         self.response_body = Response_body
         self.judge = Judge
+        self.message = Message
 
     @classmethod
     def buildCase(cls, Operation, testInteractions, testResults):
@@ -34,17 +35,21 @@ class Testcase:
 
         if ParamKey.STRATEGY in tags:
             Judge = testResults.get(Logs.ERRORSTATUSCO).get(Logs.RESULT)
+            Message = testResults.get(Logs.ERRORSTATUSCO).get(Logs.MESSAGES)
         else:
             Judge = testResults.get(Logs.STATUSCO).get(Logs.RESULT)
+            Message = testResults.get(Logs.STATUSCO).get(Logs.MESSAGES)
 
-        return cls(operation, tags, Url, Response_code, Response_body, Judge)
+
+
+        return cls(operation, tags, Url, Response_code, Response_body, Judge, Message)
 
     def showSelf(self):
         print(self.operation)
         print(self.url)
         print(self.response_code)
-        print(self.response_body)
         print(self.judge)
         print(self.tags)
+        print(self.message)
 
 
