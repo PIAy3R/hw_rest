@@ -5,9 +5,10 @@ from hw_rest.Dto.restct import Config
 from hw_rest.Dto.testcase import Testcase
 from hw_rest.Dto.rtgCaseLog import TestLog,ErrorLog
 
-rootpath = Config.dataPath
-interLogPath = Config.logpath
-errorLogPath = Config.errorpath
+class Paths:
+    rootpath = Config.dataPath
+    interLogPath = Config.logpath
+    errorLogPath = Config.errorpath
 
 TestCases = []
 apiLogs = []
@@ -15,7 +16,7 @@ ErrorLogs = []
 
 def parseTestCases():
 
-    logdirs = getPaths(rootpath)
+    logdirs = getPaths(Paths.rootpath)
 
     for logdir in logdirs:
         Logs = os.listdir(logdir)
@@ -31,7 +32,7 @@ def parseTestCases():
 
 def getPaths(rootPath):
     logdirs = list()
-    APILogs = os.listdir(rootpath)
+    APILogs = os.listdir(Paths.rootpath)
     for apis in APILogs:
         logpathNominal = Config.dataPath + apis +'/Report/NominalFuzzer'
         logpathError = Config.dataPath + apis + '/Report/ErrorFuzzer'
@@ -41,7 +42,7 @@ def getPaths(rootPath):
 
 
 def parseInterLogs():
-    filePath = Path(interLogPath)
+    filePath = Path(Paths.interLogPath)
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
@@ -49,7 +50,7 @@ def parseInterLogs():
 
 
 def parsEerrorLog():
-    filePath = Path(errorLogPath)
+    filePath = Path(Paths.errorLogPath)
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
