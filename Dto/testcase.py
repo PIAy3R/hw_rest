@@ -42,12 +42,14 @@ class Testcase:
         return cls(operation, tags, Url, Response_code, Response_body, Judge)
 
     def showSelf(self):
+        if 'mutated' in self.tags:
+            print('Error Fuzzer')
+        else:
+            print('Nominal Fuzzer')
         print('Operation: {}'.format(self.operation))
         print('url: {}'.format(self.url))
         print('response code: {}'.format(self.response_code))
         print('response body: {}'.format(self.response_body))
         print(self.judge)
-        if 'mutated' in self.tags:
-            print(self.tags)
 
 
