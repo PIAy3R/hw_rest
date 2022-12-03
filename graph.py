@@ -26,7 +26,7 @@ def createTestcase(TestCases:list):
         testnode = TestNodes.build(cases)
         operaNode = matcher.match('Operation', operation=testnode.operation).first()
         node = Node('TestCase', operation=testnode.operation, url=testnode.url, status_code=testnode.response_code,
-                    responsebody=testnode.response_body, judge=testnode.judge)
+                    responsebody=testnode.response_body, judge=testnode.judge, tags=testnode.tags)
         graph.create(node)
 
 
@@ -41,13 +41,20 @@ def createTestcase(TestCases:list):
 
 
         if testnode.response_code == 500 and 'mutated' not in testnode.tags:
-            relation = Relationship(node, 'nominal bad request', operaNode)
+            relation = Relationship(node, 'nominal server error case', operaNode)
             graph.create(relation)
 
         if testnode.response_code >= 200 and testnode.response_code < 400 and 'mutated' in testnode.tags:
-            relation = Relationship(node, 'nominal success case', operaNode)
+            relation = Relationship(node, 'error fail case', operaNode)
             graph.create(relation)
 
+        if testnode.response_code >= 400 and testnode.response_code < 500 and 'mutated' in testnode.tags:
+            relation = Relationship(node, 'error pass case', operaNode)
+            graph.create(relation)
+
+        if testnode.response_code == 500 and 'mutated' in testnode.tags:
+            relation = Relationship(node, 'error server error case', operaNode)
+            graph.create(relation)
 
 
 
