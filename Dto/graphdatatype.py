@@ -3,12 +3,12 @@ from hw_rest.parseLogs import *
 from hw_rest.Dto.testcase import *
 
 
-# class Nodes:
-#     def __init__(self):
-#         pass
+
+class Strategy:
+    pass
 
 
-class TestNodes():
+class TestNodes:
     def __init__(self,operation, tags, url, response_code, response_body, judge):
         self.operation = operation
         self.tags = tags
@@ -19,7 +19,7 @@ class TestNodes():
 
 
     @classmethod
-    def build(cls, testcase:Testcase):
+    def build(cls, testcase: Testcase):
         operation = testcase.operation
         tags = testcase.tags
         url = testcase.url

@@ -8,34 +8,51 @@ from Dto.graphdatatype import *
 
 
 graph = Graph('bolt://localhost:7687/neo4j', auth=("pzy", "pzy123456"))
-matcher = NodeMatcher(graph) #创建关系需要用到
+matcher = NodeMatcher(graph)
 
 #create operation
-def createOpera():
+def createOpera(TestCases:list):
     operationList = []
     for cases in TestCases:
         if cases.operation not in operationList:
             operationList.append(cases.operation)
     for operations in operationList:
-        graph.create(Node('Operation', operation = operations))
+        graph.create(Node('Operation', operation=operations))
 
 
 
-def createTestcase():
+def createTestcase(TestCases:list):
     for cases in TestCases:
         testnode = TestNodes.build(cases)
+        operaNode = matcher.match('Operation', operation=testnode.operation).first()
+        node = Node('TestCase', operation=testnode.operation, url=testnode.url, status_code=testnode.response_code,
+                    responsebody=testnode.response_body, judge=testnode.judge)
+        graph.create(node)
+
+
         if testnode.response_code >= 200 and testnode.response_code < 400 and 'mutated' not in testnode.tags:
-            operaNode = matcher.match('Operation', operation = testnode.operation).first()
-            node = Node('TestCase', operation=testnode.operation, url=testnode.url, status_code=testnode.response_code, responsebody=testnode.response_body,judge=testnode.judge)
-            graph.create(node)
-            relation = Relationship(node, 'success case', operaNode)
+            relation = Relationship(node, 'nominal success case', operaNode)
             graph.create(relation)
 
-def test():
-    pass
+
+        if testnode.response_code >= 400 and testnode.response_code < 500 and 'mutated' not in testnode.tags:
+            relation = Relationship(node, 'nominal bad request', operaNode)
+            graph.create(relation)
+
+
+        if testnode.response_code == 500 and 'mutated' not in testnode.tags:
+            relation = Relationship(node, 'nominal bad request', operaNode)
+            graph.create(relation)
+
+        if testnode.response_code >= 200 and testnode.response_code < 400 and 'mutated' in testnode.tags:
+            relation = Relationship(node, 'nominal success case', operaNode)
+            graph.create(relation)
+
+
+
 
 
 if __name__ == '__main__':
-    parseTestCases()
-    createOpera()
-    createTestcase()
+    testcases = parseTestCases()
+    createOpera(testcases)
+    createTestcase(testcases)

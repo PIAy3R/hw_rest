@@ -10,11 +10,10 @@ class Paths:
     interLogPath = Config.logpath
     errorLogPath = Config.errorpath
 
-TestCases = []
-apiLogs = []
-ErrorLogs = []
+
 
 def parseTestCases():
+    TestCases = []
 
     logdirs = getPaths(Paths.rootpath)
 
@@ -29,6 +28,7 @@ def parseTestCases():
             test_result = responselog.get('testResults', {})
 
             TestCases.append(Testcase.buildCase(operation, response_dict, test_result))
+    return TestCases
 
 def getPaths(rootPath):
     logdirs = list()
@@ -42,18 +42,21 @@ def getPaths(rootPath):
 
 
 def parseInterLogs():
+    apiLogs = []
     filePath = Path(Paths.interLogPath)
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
             apiLogs.append(TestLog.buildtestlog(log))
+    return apiLogs
 
 
 def parsEerrorLog():
+    ErrorLogs = []
     filePath = Path(Paths.errorLogPath)
     with filePath.open("r") as fp:
         for lines in fp:
             log = json.loads(lines)
             ErrorLogs.append(ErrorLog.builderrorlog(log))
 
-
+    return ErrorLogs
