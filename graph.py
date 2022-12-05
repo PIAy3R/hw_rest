@@ -5,6 +5,7 @@ import numpy as np
 import os
 from parseLogs import *
 from Dto.graphdatatype import *
+from tqdm import tqdm
 
 
 graph = Graph('bolt://localhost:7687/neo4j', auth=("pzy", "pzy123456"))
@@ -22,10 +23,14 @@ def createOpera(TestCases:list):
 
 
 def createTestcase(TestCases:list):
-    for cases in TestCases:
+    for cases in tqdm(TestCases, ncols=80):
         testnode = TestNodes.build(cases)
         operaNode = matcher.match('Operation', operation=testnode.operation).first()
-        node = Node('TestCase', operation=testnode.operation, url=testnode.url, status_code=testnode.response_code,
+        if testnode.response_code >= 200 and testnode.response_code < 400:
+            node = Node('SuccessTestCase', operation=testnode.operation, url=testnode.url, status_code=testnode.response_code,
+                    responsebody=testnode.response_body, judge=testnode.judge, tags=testnode.tags)
+        else:
+            node = Node('FailTestCase', operation=testnode.operation, url=testnode.url, status_code=testnode.response_code,
                     responsebody=testnode.response_body, judge=testnode.judge, tags=testnode.tags)
         graph.create(node)
 
